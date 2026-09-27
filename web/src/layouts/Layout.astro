@@ -1,0 +1,78 @@
+---
+// src/layouts/Layout.astro
+const { titulo = 'Sistema de Eventos' } = Astro.props;
+---
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{titulo}</title>
+</head>
+<body>
+  <header>
+    <strong>🎟 Eventos SENATI</strong>
+        <nav>
+      <a href="/">Eventos</a>
+      <a href="/eventos/nuevo">Nuevo evento</a>
+      <a href="/participantes">Participantes</a>
+      <span id="sesion-info"></span>
+    </nav>
+  </header>
+  <main>
+    <h1>{titulo}</h1>
+    <slot />
+  </main>
+  <script>
+    const info = document.getElementById('sesion-info');
+    const usuario = localStorage.getItem('usuario');
+    if (info) {
+      if (usuario) {
+        info.innerHTML = `👤 ${usuario} <a href="#" id="cerrar-sesion">Salir</a>`;
+        document.getElementById('cerrar-sesion').addEventListener('click', (e) => {
+          e.preventDefault();
+          localStorage.removeItem('token');
+          localStorage.removeItem('usuario');
+          window.location.href = '/login';
+        });
+      } else {
+        info.innerHTML = `<a href="/login">Iniciar sesión</a>`;
+      }
+    }
+  </script>
+
+</body>
+</html>
+
+<style is:global>
+  :root { --azul:#0b5cab; --verde:#1f8a4c; --rojo:#c62828; --gris:#6b7280; --borde:#e5e7eb; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: system-ui, sans-serif; background:#f5f7fb; color:#1f2937; }
+  header { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:.5rem;
+    padding:1rem 1.5rem; background:var(--azul); color:#fff; }
+  header nav a { color:#fff; margin-left:1rem; text-decoration:none; }
+  main { max-width:1100px; margin:auto; padding:1.5rem; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:1rem; }
+  .dos-columnas { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:1rem; margin:1rem 0; }
+  .card { background:#fff; border:1px solid var(--borde); border-radius:12px; padding:1rem; overflow-x:auto; }
+  .form { display:flex; flex-direction:column; gap:.75rem; }
+  .form label { display:flex; flex-direction:column; gap:.25rem; font-weight:600; font-size:.9rem; }
+  .fila { display:flex; gap:.75rem; flex-wrap:wrap; } .fila label { flex:1; }
+  input, textarea, select { padding:.55rem; border:1px solid var(--borde); border-radius:8px; font:inherit; width:100%; }
+  .btn { background:var(--azul); color:#fff; border:none; padding:.6rem 1rem; border-radius:8px;
+    cursor:pointer; text-decoration:none; display:inline-block; }
+  .btn:disabled { opacity:.5; cursor:not-allowed; }
+  .btn.peligro { background:var(--rojo); }
+  .acciones { display:flex; gap:.5rem; flex-wrap:wrap; }
+  .muted { color:var(--gris); }
+  .badge { background:#eef2ff; padding:.15rem .5rem; border-radius:999px; font-size:.8rem; }
+  .badge.ok, .badge.presente { background:#dcfce7; color:var(--verde); }
+  .badge.ausente { background:#fee2e2; color:var(--rojo); }
+  .error { color:var(--rojo); } .ok { color:var(--verde); }
+  table { width:100%; border-collapse:collapse; margin-top:.5rem; }
+  th, td { text-align:left; padding:.5rem; border-bottom:1px solid var(--borde); }
+  .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:.5rem; margin:1rem 0 .5rem; }
+  .stats div { background:#fff; border:1px solid var(--borde); border-radius:10px; padding:.75rem; text-align:center; }
+  .stats strong { display:block; font-size:1.5rem; } .stats span { color:var(--gris); font-size:.8rem; }
+  progress { width:100%; height:12px; }
+</style>

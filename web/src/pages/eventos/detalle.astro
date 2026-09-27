@@ -1,0 +1,8 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import TomarAsistencia from '../../components/TomarAsistencia.jsx';
+---
+<Layout titulo="Control de asistencia">
+  <a href="/">← Volver a eventos</a>
+  <TomarAsistencia client:only="react" />
+</Layout>

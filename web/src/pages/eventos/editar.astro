@@ -1,0 +1,7 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import FormEvento from '../../components/FormEvento.jsx';
+---
+<Layout titulo="Editar evento">
+  <FormEvento client:only="react" eventoId={Astro.url.searchParams.get('id')} />
+</Layout>

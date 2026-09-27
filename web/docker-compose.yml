@@ -1,0 +1,21 @@
+# sistema-eventos/docker-compose.yml
+services:
+  api:
+    build: ./api
+    container_name: api-eventos
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./api/data:/app/data
+    environment:
+      - PORT=3000
+
+  web:
+    build: ./web
+    container_name: web-eventos
+    ports:
+      - "4321:4321"
+    environment:
+      - PUBLIC_API_URL=http://localhost:3000/api
+    depends_on:
+      - api
